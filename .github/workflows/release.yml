@@ -8,7 +8,7 @@ on:
 
 jobs:
   publish-npm:
-    name: Publish package
+    name: Publish to NPM
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -29,22 +29,44 @@ jobs:
           cache: pnpm
           registry-url: https://registry.npmjs.org/
 
+      - name: Determine package version
+        id: pkg
+        run: |
+          VERSION=$(node -e "const fs = require('node:fs'); console.log(JSON.parse(fs.readFileSync('package.json', 'utf8')).version);")
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Check if npm version already exists
+        id: npm-check
+        run: |
+          if npm view @orbit-lang/orbit-js@${{ steps.pkg.outputs.version }} version >/dev/null 2>&1; then
+            echo "Version ${{ steps.pkg.outputs.version }} already published to npm."
+            echo "published=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Version ${{ steps.pkg.outputs.version }} not found on npm."
+            echo "published=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Install latest npm
+        if: steps.npm-check.outputs.published != 'true'
         run: npm install -g npm@latest
 
       - name: Install dependencies
+        if: steps.npm-check.outputs.published != 'true'
         run: pnpm install --frozen-lockfile
 
       - name: Run tests
+        if: steps.npm-check.outputs.published != 'true'
         run: pnpm test
 
       - name: Build package
+        if: steps.npm-check.outputs.published != 'true'
         run: pnpm build
 
       - name: Publish to npm
+        if: steps.npm-check.outputs.published != 'true'
         run: npm publish --provenance --access public
   publish-jsr:
-    name: Publish JSR
+    name: Publish to JSR
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -64,11 +86,32 @@ jobs:
           node-version: 20.x
           cache: pnpm
 
+      - name: Determine package version
+        id: pkg
+        run: |
+          VERSION=$(node -e "const fs = require('node:fs'); console.log(JSON.parse(fs.readFileSync('package.json', 'utf8')).version);")
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Check if JSR version already exists
+        id: jsr-check
+        run: |
+          VERSION="${{ steps.pkg.outputs.version }}"
+          if curl -fsSL https://jsr.io/@orbit-lang/orbit-js/meta.json | jq -e --arg version "$VERSION" '.versions[$version]' >/dev/null; then
+            echo "Version $VERSION already published to JSR."
+            echo "published=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Version $VERSION not found on JSR."
+            echo "published=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Install dependencies
+        if: steps.jsr-check.outputs.published != 'true'
         run: pnpm install --frozen-lockfile
 
       - name: Build package
+        if: steps.jsr-check.outputs.published != 'true'
         run: pnpm build
 
       - name: Publish to JSR
+        if: steps.jsr-check.outputs.published != 'true'
         run: npx jsr publish
