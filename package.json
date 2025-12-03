@@ -1,6 +1,6 @@
 {
   "name": "@orbit-lang/orbit-js",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "JavaScript bindings for the Orbit configuration language.",
   "type": "module",
   "main": "dist/index.js",
