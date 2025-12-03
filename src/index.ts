@@ -11,6 +11,9 @@ if (isNodeLike()) {
   nodeFs = await import("node:fs");
 }
 
+/**
+ * Generic JSON-compatible value used throughout the Orbit APIs.
+ */
 export type JsonValue =
   | string
   | number
@@ -19,33 +22,58 @@ export type JsonValue =
   | JsonValue[]
   | { [key: string]: JsonValue };
 
+/**
+ * Alias describing the parsed Orbit AST structure.
+ */
 export type OrbitAst = JsonValue;
+/**
+ * Alias describing evaluated Orbit values.
+ */
 export type OrbitValue = JsonValue;
 
+/**
+ * Byte offsets describing where something appears in the original source.
+ */
 export interface OrbitSpan {
   start: number;
   end: number;
 }
 
+/**
+ * Structured error detail reported by the WASM core.
+ */
 export interface OrbitJsError {
   kind: string;
   message: string;
   span: OrbitSpan;
 }
 
+/**
+ * Result payload returned by `parseWithRecovery`, including a best-effort
+ * document plus any parser errors that were encountered.
+ */
 export interface OrbitParseReport {
   document: JsonValue;
   errors: OrbitJsError[];
 }
 
+/**
+ * Options accepted by `evaluate` when a string literal is not provided.
+ */
 export interface OrbitEvaluateOptions {
   filePath?: string;
   source?: string;
   encoding?: BufferEncoding;
 }
 
+/**
+ * Valid inputs when calling `orbit.evaluate`.
+ */
 export type OrbitEvaluateInput = string | OrbitEvaluateOptions;
 
+/**
+ * JavaScript error wrapper that keeps the underlying Orbit error detail.
+ */
 export class OrbitError extends Error {
   constructor(public readonly detail: OrbitJsError) {
     super(`${detail.kind}: ${detail.message}`);
@@ -94,22 +122,37 @@ interface OrbitSlice {
   cap: number;
 }
 
+/**
+ * Configuration options accepted by `createOrbit` for custom instantiation
+ * scenarios (custom URLs, precompiled modules, etc.).
+ */
 export interface OrbitInitOptions {
+  /** Raw WASM bytes that should be instantiated. */
   binary?: BufferSource;
+  /** Precompiled WASM module to instantiate. */
   module?: WebAssembly.Module;
+  /** URL pointing to the WASM binary. */
   url?: string | URL;
+  /** Custom instantiate hook if callers need full control. */
   instantiate?: (
     imports: WebAssembly.Imports,
   ) => Promise<WebAssembly.WebAssemblyInstantiatedSource>;
+  /** Additional WebAssembly imports forwarded to the module. */
   imports?: WebAssembly.Imports;
 }
 
+/**
+ * High-level wrapper around the Orbit WASM exports.
+ */
 export class OrbitCore {
   private cachedView: DataView | null = null;
   private cachedU8: Uint8Array | null = null;
 
   constructor(private readonly exports: OrbitExports) {}
 
+  /**
+   * Returns the semantic version string exposed by the WASM core.
+   */
   version(): string {
     return this.invoke(
       null,
@@ -118,6 +161,9 @@ export class OrbitCore {
     );
   }
 
+  /**
+   * Parses Orbit source into its JSON-based AST representation.
+   */
   parse(source: string): OrbitAst {
     return this.invoke(
       this.encodeString(source),
@@ -126,6 +172,10 @@ export class OrbitCore {
     );
   }
 
+  /**
+   * Parses Orbit source but continues after recoverable errors, returning both
+   * a document and the list of encountered issues.
+   */
   parseWithRecovery(source: string): OrbitParseReport {
     return this.invoke(
       this.encodeString(source),
@@ -135,6 +185,9 @@ export class OrbitCore {
     );
   }
 
+  /**
+   * Evaluates Orbit source provided either directly or via file description.
+   */
   evaluate(input: OrbitEvaluateInput): OrbitValue {
     const source = this.resolveEvaluateInput(input);
     return this.invoke(
@@ -144,6 +197,9 @@ export class OrbitCore {
     );
   }
 
+  /**
+   * Evaluates a previously parsed AST without re-parsing source text.
+   */
   evaluateAst(ast: OrbitAst): OrbitValue {
     return this.invoke(
       this.encodeString(JSON.stringify(ast)),
@@ -153,6 +209,9 @@ export class OrbitCore {
     );
   }
 
+  /**
+   * Serializes a value to JSON, optionally pretty-printing the output.
+   */
   valueToJson(value: OrbitValue, options?: { pretty?: boolean }): string {
     const pretty = options?.pretty ? 1 : 0;
     return this.invoke(
@@ -163,6 +222,9 @@ export class OrbitCore {
     );
   }
 
+  /**
+   * Serializes a value to YAML format.
+   */
   valueToYaml(value: OrbitValue): string {
     return this.invoke(
       this.encodeString(JSON.stringify(value)),
@@ -172,6 +234,9 @@ export class OrbitCore {
     );
   }
 
+  /**
+   * Serializes a value to MessagePack.
+   */
   valueToMsgpack(value: OrbitValue): Uint8Array {
     return this.invoke(
       this.encodeString(JSON.stringify(value)),
@@ -341,6 +406,9 @@ export class OrbitCore {
   }
 }
 
+/**
+ * Instantiates the Orbit WASM core and returns the high-level wrapper.
+ */
 export async function createOrbit(
   options?: OrbitInitOptions,
 ): Promise<OrbitCore> {

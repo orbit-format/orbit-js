@@ -1,29 +1,30 @@
-<p align="center">
-  <img src="https://img.shields.io/npm/v/orbit-js.svg" alt="npm version" />
-  <img src="https://img.shields.io/npm/l/orbit-js.svg" alt="license" />
-</p>
-
 # orbit-js
+
+<p align="left">
+  <img src="https://img.shields.io/npm/v/@orbit-lang/orbit-js.svg" alt="npm version" />
+  <img src="https://img.shields.io/npm/l/@orbit-lang/orbit-js.svg" alt="license" />
+</p>
 
 JavaScript/WebAssembly bindings for the [Orbit configuration language](https://github.com/orbit-format/orbit). Use `orbit-js` to parse, evaluate, and serialize Orbit documents directly from Node.js or any modern runtime with WebAssembly support.
 
 ## Installation
 
 ```sh
-# with pnpm (recommended)
-pnpm add orbit-js
-
-# or with npm / yarn
-npm install orbit-js
-yarn add orbit-js
+npm install @orbit-lang/orbit-js
+# or
+yarn add @orbit-lang/orbit-js
+# or
+pnpm add @orbit-lang/orbit-js
+# or
+bun add @orbit-lang/orbit-js
 ```
 
-`orbit-js` ships as an ESM-only package and requires Node.js 18+ (or an equivalent browser/bundler environment with `fetch` and WebAssembly enabled).
+`@orbit-lang/orbit-js` ships as an ESM-only package and requires Node.js 18+ (or an equivalent browser/bundler environment with `fetch` and WebAssembly enabled).
 
 ## Quick start
 
 ```ts
-import { createOrbit } from "orbit-js";
+import { createOrbit } from "@orbit-lang/orbit-js";
 
 const orbit = await createOrbit();
 const value = orbit.evaluate(`
@@ -36,7 +37,7 @@ app {
 console.log(value.app.name); // "orbit"
 ```
 
-During installation the package downloads a matching `orbit_core.wasm` artifact from the Orbit release that corresponds to the npm package version. No local Rust toolchain is required.
+During installation the package downloads a matching `orbit_core.wasm` artifact from the Orbit release that corresponds to the npm package version.
 
 ## Runtime compatibility
 
