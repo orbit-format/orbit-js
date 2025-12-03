@@ -22,6 +22,7 @@ pnpm run build
 
 - `pnpm run build` compiles TypeScript to `dist/` and ensures the WebAssembly
   artifact has been downloaded.
+- `pnpm run download-wasm` fetches the wasm binary without running a full build; `build`, `test`, and publish hooks already call it.
 - `pnpm run test` executes the Vitest suite. Run it before you open a pull
   request.
 - `pnpm run clean` removes build outputs so you can start fresh.

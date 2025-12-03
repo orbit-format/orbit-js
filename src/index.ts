@@ -3,7 +3,7 @@ const SLICE_STRUCT_SIZE = 12;
 
 const textEncoder = new TextEncoder();
 const textDecoder = new TextDecoder();
-const DEFAULT_WASM_URL = new URL("../wasm/orbit_core.wasm", import.meta.url);
+const DEFAULT_WASM_URL = new URL("./orbit_core.wasm", import.meta.url);
 
 let nodeFs: typeof import("node:fs") | null = null;
 

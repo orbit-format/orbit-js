@@ -14,6 +14,7 @@ Use this checklist to make reviews faster and keep orbit-js releases predictable
 
 - `pnpm run build` succeeds without TypeScript errors.
 - `pnpm run test` passes locally.
+- Run `pnpm run download-wasm` whenever you need to refresh the wasm artifact manually; build/test scripts already invoke it.
 - Formatting has been applied via `pnpm run format` (or your editor's Prettier integration).
 - WASM artifacts or fixtures needed by tests are added to the repo (do not rely on unpublished assets).
 

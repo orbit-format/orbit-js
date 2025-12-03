@@ -10,8 +10,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const packageRoot = path.resolve(__dirname, "..");
 const packageJsonPath = path.join(packageRoot, "package.json");
-const wasmDir = path.join(packageRoot, "wasm");
-const wasmOut = path.join(wasmDir, "orbit_core.wasm");
+const srcDir = path.join(packageRoot, "src");
+const distDir = path.join(packageRoot, "dist");
+const wasmOut = path.join(srcDir, "orbit_core.wasm");
+const wasmDir = path.dirname(wasmOut);
 
 async function readPackageVersion() {
   const raw = await fs.readFile(packageJsonPath, "utf8");
@@ -53,6 +55,12 @@ async function downloadWasmForTag(tag) {
   await fs.writeFile(wasmOut, bytes);
   console.log(
     `[orbit-js]: Saved wasm artifact to ${path.relative(packageRoot, wasmOut)}`,
+  );
+  await fs.mkdir(distDir, { recursive: true });
+  const distWasmOut = path.join(distDir, "orbit_core.wasm");
+  await fs.writeFile(distWasmOut, bytes);
+  console.log(
+    `[orbit-js]: Saved wasm artifact to ${path.relative(packageRoot, distWasmOut)}`,
   );
 }
 

@@ -1,6 +1,6 @@
 {
   "name": "@orbit-lang/orbit-js",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "JavaScript bindings for the Orbit configuration language.",
   "type": "module",
   "main": "dist/index.js",
@@ -17,11 +17,12 @@
     "README.md"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "install": "node ./scripts/install.mjs",
+    "build": "pnpm run download-wasm && tsc -p tsconfig.build.json",
+    "download-wasm": "node ./scripts/download-wasm.mjs",
     "format": "prettier --write .",
     "clean": "rimraf dist wasm",
-    "test": "vitest run"
+    "test": "pnpm run download-wasm && vitest run",
+    "prepack": "pnpm run build"
   },
   "keywords": [
     "orbit",

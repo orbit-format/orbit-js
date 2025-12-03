@@ -37,8 +37,6 @@ app {
 console.log(value.app.name); // "orbit"
 ```
 
-During installation the package downloads a matching `orbit_core.wasm` artifact from the Orbit release that corresponds to the npm package version.
-
 ## Runtime compatibility
 
 - Node.js – Works out of the box. When `orbit.evaluate` receives a string it first tries to load it as a file path using synchronous `fs` calls; pass `{ source: "..." }` to skip the heuristic.
@@ -127,7 +125,7 @@ const orbit = await createOrbit({
 });
 ```
 
-- Set `ORBIT_WASM_TAG` before installation to pin the helper script to a specific Orbit release tag (e.g., `ORBIT_WASM_TAG=nightly-2024-12-01`).
+- Set `ORBIT_WASM_TAG` before running `pnpm run download-wasm` (or scripts that call it) to pin the helper to a specific Orbit release tag (e.g., `ORBIT_WASM_TAG=nightly-2024-12-01`).
 - Provide `url` when the wasm asset lives on a CDN or is injected by your framework.
 - Use `instantiate` if your environment requires specialized streaming instantiation or caching.
 
@@ -158,6 +156,8 @@ pnpm install
 pnpm run build
 pnpm run test
 ```
+
+`pnpm run download-wasm` is available when you only need the wasm artifact; `build`, `test`, and the publish hooks run it automatically.
 
 `pnpm run build` compiles TypeScript to `dist/` and ensures the wasm artifact is present. `pnpm run test` executes the Vitest suite. See [CONTRIBUTING.md](CONTRIBUTING.md) for the full workflow.
 

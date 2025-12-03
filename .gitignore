@@ -1,3 +1,4 @@
 wasm/
 node_modules/
 dist/
+src/orbit_core.wasm
