@@ -1,5 +1,5 @@
 {
-  "name": "orbit-js",
+  "name": "@orbit-lang/orbit-js",
   "version": "0.1.0",
   "description": "JavaScript bindings for the Orbit configuration language.",
   "type": "module",
