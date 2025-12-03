@@ -1,0 +1,44 @@
+name: "Feature request"
+description: "Suggest an enhancement for orbit-js"
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for proposing improvements! Tell us about the problem you are trying to solve.
+  - type: input
+    id: usecase
+    attributes:
+      label: Use case
+      description: Describe the workflow or scenario that needs improvement.
+      placeholder: I need to ...
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: How would you like orbit-js to behave? Include API sketches if helpful.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Mention any workarounds or other libraries you have tried.
+  - type: dropdown
+    id: impact
+    attributes:
+      label: Impact
+      options:
+        - Nice to have
+        - Important
+        - Blocker
+    validations:
+      required: true
+  - type: textarea
+    id: extras
+    attributes:
+      label: Additional context
+      description: Links, screenshots, or any other context.

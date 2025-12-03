@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security reports
+    url: https://github.com/orbit-format/orbit-js/security/advisories/new
+    about: Please report security vulnerabilities privately via GitHub advisories.
+  - name: Questions and general discussion
+    url: https://github.com/orbit-format/orbit/discussions
+    about: For usage questions or community discussions, start a thread in the Orbit discussions board.

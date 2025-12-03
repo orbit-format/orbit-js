@@ -1,0 +1,70 @@
+name: "Bug report"
+description: "Report a reproducible problem in orbit-js"
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to file a bug. Please fill out every section so we can help quickly.
+  - type: input
+    id: summary
+    attributes:
+      label: Summary
+      description: What went wrong?
+      placeholder: Describe the unexpected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction steps
+      description: Provide a minimal code snippet, repository link, or command sequence to reproduce the issue.
+      placeholder: |
+        1. pnpm add orbit-js
+        2. Run the following code ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What should have happened instead?
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs/output
+      description: Paste stack traces or console output. Use fenced code blocks for readability.
+      render: shell
+  - type: input
+    id: orbitVersion
+    attributes:
+      label: orbit-js version
+      placeholder: 0.1.0
+    validations:
+      required: true
+  - type: input
+    id: nodeVersion
+    attributes:
+      label: Node.js/runtime version
+      placeholder: Node 20.11, Chrome 120, etc.
+    validations:
+      required: true
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Runtime
+      options:
+        - Node.js
+        - Browser
+        - Edge runtime (Workers, Deno, etc.)
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Additional context
+      description: Anything else we should know?
