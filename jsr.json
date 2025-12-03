@@ -1,13 +1,6 @@
 {
   "name": "@orbit-lang/orbit-js",
   "version": "0.1.2",
-  "exports": {
-    ".": "./dist/index.js"
-  },
-  "types": "./dist/index.d.ts",
-  "publish": {
-    "include": [
-      "dist/**/*"
-    ]
-  }
+  "exports": "src/index.ts",
+  "license": "BSD-3-Clause"
 }
