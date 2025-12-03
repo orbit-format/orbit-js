@@ -2,9 +2,7 @@
   "name": "@orbit-lang/orbit-js",
   "version": "0.1.2",
   "exports": {
-    ".": {
-      "default": "./dist/index.js",
-      "types": "./dist/index.d.ts"
-    }
-  }
+    ".": "./dist/index.js"
+  },
+  "types": "./dist/index.d.ts"
 }
