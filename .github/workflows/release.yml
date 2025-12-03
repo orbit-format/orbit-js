@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      id-token: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -38,9 +39,7 @@ jobs:
         run: pnpm build
 
       - name: Publish to npm
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: pnpm publish --access public --no-git-checks
+        run: pnpm publish --provenance --access public --no-git-checks
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2

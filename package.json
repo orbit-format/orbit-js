@@ -1,6 +1,6 @@
 {
   "name": "@orbit-lang/orbit-js",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "JavaScript bindings for the Orbit configuration language.",
   "type": "module",
   "main": "dist/index.js",
@@ -34,6 +34,14 @@
   "engines": {
     "node": ">=18"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/orbit-format/orbit-js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/orbit-format/orbit-js/issues"
+  },
+  "homepage": "https://github.com/orbit-format/orbit-js#readme",
   "devDependencies": {
     "@types/node": "^24.10.1",
     "prettier": "^3.7.4",
